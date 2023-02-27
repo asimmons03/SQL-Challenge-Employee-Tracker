@@ -85,15 +85,88 @@ async function viewEmployees () {
 
 async function addADepartment() {
     const department = await database.viewAllDepartments();
-    const answers = await inquirer 
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the name of this new department?',
+            name: 'departmentName'
+        },
+    ]);
+    await database.addDepartment(answer.departmentName);
+    console.log('Deparment added successfully');
 }
 async function addARole() {
     const department = await database.viewAllDepartments();
-    const answers = await inquirer 
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the title of the role?',
+            name: 'title'
+        },
+        {
+            type: 'input',
+            message: 'What is the salary of the role?',
+            name: 'salary'
+        },
+        {
+            type: 'list',
+            message: 'What department does this role belong to?',
+            choices: departments,
+            name: 'department'
+        },
+    ]);
+    console.log(answers);
+    for(let i= 0; i < departments.length; i++ ) {
+        if(answers.department === departments[i].name) {
+            console.log(departments[i].id);
+            await database.addRole(answers.title, answers.salary, departments[i].id);
+        }
+    }
+    console.log("Role added successfully")
 }
 async function addAEmployee() {
     const roles = await database.viewAllRoles();
-    const managers  = await inquirer 
+    const managers  = await database.ViewAllEmployees();
+    const managersName = managers.map((manager) => {
+        return `${manager.first_name} ${manager.last_name}`;
+});
+    let rileId;
+    let managerId;
+    const answers = await inquirer.prompt(
+        {
+             type: 'input',
+            message: "What is the employee's first name?",
+             name: 'firstName'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's last name?",
+            name: 'lastName'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's role?",
+            choices: roles.title,
+            name: 'role'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's manager?",
+            choices: managers,
+            name: 'manager'
+        }
+    )};
+
+    for(let i = 0; i < roles.length; i++) {
+        if(answers.role === roles[i].title) {
+            roleId = roles[i].id;
+    }
 }
 
+for(let i = 0; i < managers.length; i++) {
+    if(answers.manager)
+
+
+
 menu();
+}

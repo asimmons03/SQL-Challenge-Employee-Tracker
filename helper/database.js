@@ -35,8 +35,9 @@ class Database {
     }
 
     addEmployee(firstName, lastName, role_id, manager_id) {
-
-    }
+        return this.connection.query("INSERT INTO employees SET first_name = ?, last_name = ?, role_id = ?, manager_id = ?", 
+        [firstName, lastNname, role_id, manager_id]
+    )}
 }
 
 const database = new Database(db);
